@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="m31_color_background">#F1F1F1</color>
+
+    <color name="m31_color_actionbar_background">#FFFFFFFF</color>
+    <color name="m31_color_actionbar_icon_disable">#A6A6A6</color>
+    <color name="m31_color_actionbar_icon_default">#212121</color>
+    <color name="m31_color_actionbar_icon_pressed">#FFB341</color>
+    <color name="m31_color_actionbar_title">#212121</color>
+
+    <color name="m31_color_card_background">#FFFFFFFF</color>
+
+    <color name="m31_color_info_background">#FFFFFFFF</color>
+    <color name="m31_color_info_stroke">#A6A6A6</color>
+
+    <color name="m31_color_stack_trace_title">#000000</color>
+    <color name="m31_color_stack_trace">#000000</color>
+
+    <color name="m31_black">#000000</color>
+    <color name="m31_white">#FFFFFF</color>
+    <color name="m31_transparent">#00000000</color>
+
+    <color name="m31_color_toast_normal_text">#000000</color>
+    <color name="m31_color_toast_normal_background">#FFFFFF</color>
+
+    <color name="m31_color_toast_light_text">#212529</color>
+    <color name="m31_color_toast_light_background">#F8F9FA</color>
+
+    <color name="m31_color_toast_dark_text">#FFFFFF</color>
+    <color name="m31_color_toast_dark_background">#212529</color>
+
+    <color name="m31_color_toast_primary_text">#FFFFFF</color>
+    <color name="m31_color_toast_primary_background">#0D6EFD</color>
+
+    <color name="m31_color_toast_gray_text">#FFFFFF</color>
+    <color name="m31_color_toast_gray_background">#6C757D</color>
+
+    <color name="m31_color_toast_success_text">#FFFFFF</color>
+    <color name="m31_color_toast_success_background">#198754</color>
+
+    <color name="m31_color_toast_info_text">#21251A</color>
+    <color name="m31_color_toast_info_background">#0DCAF0</color>
+
+    <color name="m31_color_toast_warning_text">#21251A</color>
+    <color name="m31_color_toast_warning_background">#FFC107</color>
+
+    <color name="m31_color_toast_error_text">#FFFFFF</color>
+    <color name="m31_color_toast_error_background">#DC3545</color>
+
+</resources>

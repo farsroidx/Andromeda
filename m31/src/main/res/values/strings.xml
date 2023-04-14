@@ -1,0 +1,5 @@
+<resources>
+    <string name="m31_page_title">Report Crash Info</string>
+    <string name="m31_page_des">An error has occurred</string>
+    <string name="m31_stack_trace">Stack Trace:</string>
+</resources>

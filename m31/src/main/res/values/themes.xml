@@ -1,0 +1,13 @@
+<resources>
+
+    <style name="Theme.Andromeda.Exception" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:theme">@style/Style.Andromeda.FontFamily</item>
+    </style>
+
+    <style name="Style.Andromeda.FontFamily" parent="">
+        <item name="android:fontFamily">@font/vazirmatn_regular</item>
+        <item name="fontFamily">@font/vazirmatn_regular</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+</resources>

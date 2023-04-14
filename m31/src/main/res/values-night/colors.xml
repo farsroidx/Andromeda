@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="m31_color_background">#181818</color>
+
+    <color name="m31_color_actionbar_background">#212121</color>
+    <color name="m31_color_actionbar_icon_disable">#A6A6A6</color>
+    <color name="m31_color_actionbar_icon_default">#FFFFFFFF</color>
+    <color name="m31_color_actionbar_icon_pressed">#03A9F4</color>
+    <color name="m31_color_actionbar_title">#FFFFFFFF</color>
+
+    <color name="m31_color_card_background">#212121</color>
+
+    <color name="m31_color_info_background">#212121</color>
+    <color name="m31_color_info_stroke">#A6A6A6</color>
+
+    <color name="m31_color_stack_trace_title">#FFFFFF</color>
+    <color name="m31_color_stack_trace">#FFFFFF</color>
+
+    <color name="m31_color_toast_normal_text">#FFFFFF</color>
+    <color name="m31_color_toast_normal_background">#212121</color>
+
+</resources>

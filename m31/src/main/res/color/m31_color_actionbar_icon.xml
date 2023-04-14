@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:color="@color/m31_color_actionbar_icon_pressed"
+        android:state_pressed="true" />
+
+    <item android:color="@color/m31_color_actionbar_icon_disable"
+        android:state_enabled="false" />
+
+    <item android:color="@color/m31_color_actionbar_icon_default" />
+
+</selector>
