@@ -18,9 +18,25 @@ dependencyResolutionManagement {
 }
 ```
 
-#### 2. Copy the following line in section `dependencies` in file `build.gradle` of module `app` and replace it with `LATEST_VERSION` according to the latest version in the [![](https://jitpack.io/v/farsroidx/Andromeda.svg)](https://jitpack.io/#farsroidx/Andromeda) repository:
+#### 2. Copy the following line in section `dependencies` in file `build.gradle` of module `app` and replace it with `LATEST_VERSION` according to the latest version in the [![](https://jitpack.io/v/farsroidx/andromeda.svg)](https://jitpack.io/#farsroidx/andromeda) repository:
 
 ```groovy
 implementation 'com.github.farsroidx:Andromeda:LATEST_VERSION'
 ```
 [![Ask Me Anything !](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)](https://github.com/farsroidx)
+
+### Change List
+
+#### `v1.0.0` :
+- **Added**:
+    - App
+    - Device
+    - Dispatcher
+    - Memory
+    - Preference
+    - Utils
+        - Clipboard
+
+#### `v1.1.0` :
+- **Fixed**: `~/git.bat`.
+- **Deleted**: `suspend` of the memory unit methods. Now you have access to the methods without `CoroutineScope`.

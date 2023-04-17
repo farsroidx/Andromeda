@@ -10,7 +10,7 @@ internal class MemoryImpl(
 
     private val runtimeMemory = mutableMapOf<String, MemoryModel>()
 
-    override suspend fun <T: Any> store(key: String, value: T) {
+    override fun <T: Any> store(key: String, value: T) {
         runtimeMemory[key] = MemoryModel(
             value, config.expirationTime.toExpirationTime(
                 config.expirationUnit
@@ -19,7 +19,7 @@ internal class MemoryImpl(
     }
 
     @Suppress("UNCHECKED_CAST")
-    override suspend fun <T: Any> getByNull(key: String): T? {
+    override fun <T: Any> getByNull(key: String): T? {
         return if (runtimeMemory.containsKey(key)) {
             val valueObject = runtimeMemory[key]!!
             if (valueObject.expirationTime.isExpired()) {
@@ -31,7 +31,7 @@ internal class MemoryImpl(
     }
 
     @Suppress("UNCHECKED_CAST")
-    override suspend fun <T: Any> get(key: String): T {
+    override fun <T: Any> get(key: String): T {
         if (runtimeMemory.containsKey(key)) {
             return ( runtimeMemory[key]!!.value as T )
         } else {
@@ -42,7 +42,7 @@ internal class MemoryImpl(
     }
 
     @Suppress("UNCHECKED_CAST")
-    override suspend fun <T: Any> get(key: String, alternate: T?): T {
+    override fun <T: Any> get(key: String, alternate: T?): T {
 
         if (runtimeMemory.containsKey(key)) {
             return ( runtimeMemory[key]!!.value as T )
@@ -56,7 +56,7 @@ internal class MemoryImpl(
         return alternate
     }
 
-    override suspend fun isKeyStored(key: String): Boolean {
+    override fun isKeyStored(key: String): Boolean {
         return if (runtimeMemory.containsKey(key)) {
             if (runtimeMemory[key]?.expirationTime.isExpired()) {
                 runtimeMemory.remove(key)
@@ -65,7 +65,7 @@ internal class MemoryImpl(
         } else false
     }
 
-    override suspend fun remove(vararg keys: String) {
+    override fun remove(vararg keys: String) {
         keys.forEach {
             if (runtimeMemory.containsKey(it)) {
                 runtimeMemory.remove(
@@ -75,5 +75,5 @@ internal class MemoryImpl(
         }
     }
 
-    override suspend fun clear() = runtimeMemory.clear()
+    override fun clear() = runtimeMemory.clear()
 }

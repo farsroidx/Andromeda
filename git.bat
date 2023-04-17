@@ -2,6 +2,9 @@
 
 set "GCCVersion=1.0.0"
 set "IniFileName=git.ini"
+set "GitCommand="
+set "GitExtraCommand="%~1\""
+set "GitCurrentBranch=main"
 
 title = Git Control Command [v%GCCVersion%]
 
@@ -41,6 +44,7 @@ if not exist "%IniFileName%" (
 	  echo name=
 	  echo email=
 	  echo password=
+	  echo location=
 	) > git.ini
 	echo * 	Config File stored successfully.
 	goto :initAuthenticatedUser
@@ -87,7 +91,21 @@ if not exist "%IniFileName%" (
 		set "passwordStatus=0"
 		echo *	Password: [No content]
 	) else (
-		echo *	Password: %password%
+		::echo *	Password: %password%
+		echo *	Password: **********
+	)
+	:: ****************************************************************************
+	set "location="
+	set "locationStatus=1"
+	for /f "delims=" %%a in ('findstr /i "^location=" %IniFileName%') do set "%%a"
+	if not defined location (
+		set "locationStatus=-1"
+		echo *	Location: [Identification error]
+	) else if location == "" (
+		set "locationStatus=0"
+		echo *	Location: [No content]
+	) else (
+		echo *	Location: %location%
 	)
 	echo *
 	:: ****************************************************************************
@@ -117,20 +135,31 @@ if not exist "%IniFileName%" (
 		call :getUserPassword 
 	)
 	:: ****************************************************************************
+	if "%locationStatus%" == "-1" (
+		set "isNeed2Change=1"
+		call :getGitLocation
+	) else if "%locationStatus%" == "0" (
+		set "isNeed2Change=1"
+		call :getGitLocation 
+	)
+	:: ****************************************************************************
 	if "%isNeed2Change%" == "1" (
 		(
 		  echo [Authenticated]
 		  echo name=%name%
 		  echo email=%email%
 		  echo password=%password%
+		  echo location=%location%
 		) > git.ini
 		echo * 	Config File stored successfully with new information.
 		goto :initAuthenticatedUser
 	)
 	:: ****************************************************************************
+	set "GitCommand="%location%\bin\sh.exe" --login -i -c"
+	:: ****************************************************************************
 	echo * Is the user information above correct about you?
 	echo *	[1]: Yes, Continue
-	echo *	[-]: Send anything to exit.
+	echo *	[ ]: Send anything to exit.
 	echo *
 	set /p isCorrect="* Your answer: " || set "isCorrect=0"
 	if not "%isCorrect%"=="1" (
@@ -180,13 +209,26 @@ if not exist "%IniFileName%" (
 	
 :: -----------------------------------------------------------------------------------------------------------
 
+:getGitLocation
+	echo * To continue, you must enter your git location:
+	set /p location="* Your location: " || set "location=-1"
+	echo *
+	if /I "%location%"=="-1" (
+		goto :getGitLocation
+	) else if /I "%location%"=="" (
+		goto :getGitLocation
+	)
+	goto :eof
+	
+:: -----------------------------------------------------------------------------------------------------------
+
 :notCorrectUser
 	echo *
 	echo * Ops, I will see you again later. I hope :)
 	echo *
 	echo * MMMMM, If you want, I can delete the configuration file...
 	echo *	[1]: Sure, Delete it
-	echo *	[-]: Send anything to exit.
+	echo *	[ ]: Send anything to exit.
 	echo *
 	set /p isDeleteConfig="* I delete it?: " || set "isDeleteConfig=0"
 	echo *
@@ -205,50 +247,130 @@ if not exist "%IniFileName%" (
 
 :correctUser
 	echo *
+	echo *********************************************************************
+	echo *
 	echo * OK, Setting the user in the git...
 	echo *
 	echo *********************************************************************
-	::start cmd /c "git status"
-	::git status
+	echo *
+	%GitCommand% "git config --global user.name \"%name%\"" %GitExtraCommand%
+	echo * The name settings have been updated again.
+	%GitCommand% "git config --global user.email \"%email%\"" %GitExtraCommand%
+	echo * The email settings have been updated again.
+	%GitCommand% "git config --global user.password \"%password%\"" %GitExtraCommand%
+	echo * The password settings have been updated again.
+	echo *
 	echo *********************************************************************
 	echo *
 	echo * Setup completed.
 	echo *
+	echo *********************************************************************
+	echo *
+	goto :gitMenu
+
+:: -----------------------------------------------------------------------------------------------------------
+
+:gitMenu
+	echo * What are you going to do?
+	echo *	[1]: Reflog --- Display the latest project status.
+	echo *	[2]: Status --- Display the latest project status.
+	echo *	[3]: Pull ----- Display the latest project status.
+	echo *	[4]: Push ----- Display the latest project status.
+	echo *
+	set /p need="* Your need: " || set "need=0"
+	echo *
+	if /I "%need%"=="1" (
+		goto :gitReflog
+	) else if /I "%need%"=="2" (
+		goto :gitStatus
+	) else if /I "%need%"=="3" (
+		goto :gitPull
+	) else if /I "%need%"=="4" (
+		goto :gitPush
+	) else (
+		goto :gitMenu
+	)
+	echo *
 	pause
 	exit
 	
 :: -----------------------------------------------------------------------------------------------------------
-	
-	
-	
-	
-	
-	
-	
-	
+
+:gitReflog
+	echo * Git Reflog is running...
+	echo *
+	%GitCommand% "git reflog" %GitExtraCommand%
+	echo *
+	goto :gitNeedMore
 	
 :: -----------------------------------------------------------------------------------------------------------
 
 :gitStatus
-	echo * gitStatus successfully.
+	echo * Git Status is running...
 	echo *
-	pause
-	exit
+	%GitCommand% "git status" %GitExtraCommand%
+	echo *
+	goto :gitNeedMore
+	
+:: -----------------------------------------------------------------------------------------------------------
 
 :gitPull
-	echo * gitPull successfully.
+	echo * Which branch do you want to receive data from?
 	echo *
-	pause
-	goto :eof
+	%GitCommand% "git branch -a" %GitExtraCommand%
+	echo *
+	set /p needBranch="* Your branch (%GitCurrentBranch%): " || set "needBranch=%GitCurrentBranch%"
+	echo *
+	echo * Git Pull is running...
+	echo *
+	%GitCommand% "git pull origin %needBranch%" %GitExtraCommand%
+	echo *
+	goto :gitNeedMore
+	
+:: -----------------------------------------------------------------------------------------------------------
 
 :gitPush
-	echo * gitPush successfully.
+	echo * Which branch do you want to send the data to?
 	echo *
-	pause
-	goto :eof
+	%GitCommand% "git branch -a" %GitExtraCommand%
+	echo *
+	set /p needBranch="* Your branch (%GitCurrentBranch%): " || set "needBranch=%GitCurrentBranch%"
+	echo *
+	%GitCommand% "git status" %GitExtraCommand%
+	echo *
+	echo * Which changes do you want to add?
+	echo *
+	set /p needAdd="* Which change (all): " || set "needAdd=."
+	echo *
+	%GitCommand% "git add %needAdd%" %GitExtraCommand%
+	echo *
+	echo * Enter commit message:
+	set /p commitMessage="Message (Initial commit): " || set "commitMessage=Initial commit"
+	echo *
+	%GitCommand% "git commit -m \"%commitMessage%\"" %GitExtraCommand%
+	echo *
+	%GitCommand% "git config --global push.autoSetupRemote true" %GitExtraCommand%
+	echo *
+	echo * Git Push is running...
+	echo *
+	%GitCommand% "git push origin %needBranch%" %GitExtraCommand%
+	echo *
+	goto :gitNeedMore
 	
+:: -----------------------------------------------------------------------------------------------------------
 
-echo *
-echo * What are you going to do?
-
-pause
+:gitNeedMore
+	echo * Do you need more operations?
+	echo *	[1]: Return to git menu.
+	echo *	[ ]: Send anything to exit.
+	echo *
+	set /p isMore="* Need: " || set "isMore=0"
+	echo *
+	if /I "%isMore%"=="1" (
+		goto :gitMenu
+	) else (
+		echo * I'm happy to see you!
+		echo *
+		pause
+		exit
+	)
