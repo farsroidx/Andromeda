@@ -3,15 +3,20 @@
 package ir.farsroidx.m31
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
+import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import ir.farsroidx.m31.additives.autoViewDataBinding
 
-abstract class AndromedaAdapter<VDB: ViewDataBinding, M: Any>
-    : RecyclerView.Adapter<AndromedaAdapter.AndromedaViewHolder<VDB>>()
+abstract class AndromedaRecyclerAdapter<VDB: ViewDataBinding, M: Any>
+    : RecyclerView.Adapter<AndromedaRecyclerAdapter.AndromedaViewHolder<VDB>>()
 {
 
     protected lateinit var context: Context
@@ -153,4 +158,18 @@ abstract class AndromedaAdapter<VDB: ViewDataBinding, M: Any>
 
     @CallSuper
     override fun getItemCount(): Int = mItems.size
+
+    protected fun getColorById(@ColorRes resId: Int): Int {
+        return ContextCompat.getColor(context, resId)
+    }
+
+    protected fun getStringById(@StringRes resId: Int): String {
+        return context.getString(resId)
+    }
+
+    protected fun getDrawableById(@DrawableRes resId: Int): Drawable? {
+        return ContextCompat.getDrawable(context, resId)
+    }
+
+    protected fun getItems(): List<M> = mItems
 }

@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package ir.farsroidx.m31
 
 class AndromedaException : RuntimeException {

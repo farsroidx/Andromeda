@@ -1,13 +1,16 @@
+@file:Suppress("unused")
+
 package ir.farsroidx.m31.additives
 
 import ir.farsroidx.m31.app.AppConfig
 import ir.farsroidx.m31.device.DeviceConfig
 import ir.farsroidx.m31.exception.ExceptionHandlerConfig
+import ir.farsroidx.m31.manager.ManagerConfig
 import ir.farsroidx.m31.memory.MemoryConfig
 import ir.farsroidx.m31.preference.PreferenceConfig
 import ir.farsroidx.m31.utils.UtilsConfig
 
-// TODO: Configuration ========================================================================= ///
+// TODO: Configuration =========================================================== Configuration ===
 
 fun configAppModule(
     invoker: AppConfig.() -> Unit = {}
@@ -27,6 +30,13 @@ fun configExceptionHandlerModule(
     invoker: ExceptionHandlerConfig.() -> Unit = {}
 ): ExceptionHandlerConfig {
     return ExceptionHandlerConfig()
+        .apply(invoker)
+}
+
+fun configManagerModule(
+    invoker: ManagerConfig.() -> Unit = {}
+): ManagerConfig {
+    return ManagerConfig()
         .apply(invoker)
 }
 

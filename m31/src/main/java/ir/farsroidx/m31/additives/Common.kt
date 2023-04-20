@@ -1,4 +1,4 @@
-@file:Suppress("unused", "REDUNDANT_ELSE_IN_WHEN")
+@file:Suppress("unused")
 
 package ir.farsroidx.m31.additives
 
@@ -7,7 +7,7 @@ import ir.farsroidx.m31.AndromedaApplication
 import ir.farsroidx.m31.AndromedaConfig
 import ir.farsroidx.m31.AndromedaTimeUnit
 
-// TODO: Common ================================================================================ ///
+// TODO: Common ========================================================================= Common ===
 
 internal const val PREFERENCE_NAME = "andromeda-preferences"
 

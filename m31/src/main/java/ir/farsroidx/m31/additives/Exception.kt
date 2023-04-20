@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package ir.farsroidx.m31.additives
 
 import android.text.SpannableStringBuilder
@@ -5,7 +7,7 @@ import android.util.Patterns
 import ir.farsroidx.m31.AndromedaException
 import kotlin.system.exitProcess
 
-// TODO: Exception ============================================================================= ///
+// TODO: Exception =================================================================== Exception ===
 
 internal fun SpannableStringBuilder.appendByLine(value: CharSequence, enterCount: Int = 1): SpannableStringBuilder {
     this.append(value)

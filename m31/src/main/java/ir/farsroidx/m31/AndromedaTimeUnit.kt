@@ -1,3 +1,5 @@
+@file:Suppress("unused", "MemberVisibilityCanBePrivate")
+
 package ir.farsroidx.m31
 
 sealed class AndromedaTimeUnit (val value: Int) {

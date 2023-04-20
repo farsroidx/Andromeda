@@ -40,3 +40,6 @@ implementation 'com.github.farsroidx:Andromeda:LATEST_VERSION'
 #### `v1.1.0` :
 - **Fixed**: `~/git.bat`.
 - **Deleted**: `suspend` of the memory unit methods. Now you have access to the methods without `CoroutineScope`.
+
+#### `v1.2.0` :
+- **Changes**: There are many changes [`Recommended`].

@@ -29,6 +29,11 @@ class Application : AndromedaApplication() {
             setDeveloperEmail("mohammadali.riazati@yahoo.com")
         },
 
+        // TODO: if you want use of manager module
+        configManagerModule {
+
+        },
+
         // TODO: if you want use of memory module
         configMemoryModule {
             setExpirationTime(5, AndromedaTimeUnit.Minutes)

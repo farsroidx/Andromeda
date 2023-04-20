@@ -1,78 +1,131 @@
+@file:Suppress("unused")
+
 package ir.farsroidx.m31.additives
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
-import ir.farsroidx.m31.AndromedaActivity
-import ir.farsroidx.m31.AndromedaAdapter
-import ir.farsroidx.m31.AndromedaFragment
-import java.lang.reflect.ParameterizedType
-import java.util.*
+import android.app.Activity
+import android.graphics.Color
+import android.graphics.Point
+import android.view.MotionEvent
+import android.view.View
+import android.widget.EditText
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
 
-// TODO: View ================================================================================== ///
+// TODO: View ============================================================================= View ===
 
-/** Convert a camel case string to snake case. */
-private val camelRegex = "(?<=[a-zA-Z])[A-Z]".toRegex()
-internal fun String.toSnakeCase(): String {
-    return camelRegex.replace(this) {
-        "_${it.value}"
-    }.lowercase(Locale.getDefault())
+fun View.gone() {
+    this.visibility = View.GONE
 }
 
-/** Automatically sets (ViewDataBinding) using generics detection */
-@SuppressLint("DiscouragedApi")
-@Suppress("UNCHECKED_CAST")
-internal fun <T: ViewDataBinding> AndromedaActivity<*>.autoViewDataBinding(): T {
+fun View.invisible() {
+    this.visibility = View.INVISIBLE
+}
 
-    val persistentClass : Class<T> = ( javaClass.genericSuperclass as ParameterizedType)
-        .actualTypeArguments[0] as Class<T>
+fun View.visible() {
+    this.visibility = View.VISIBLE
+}
 
-    val layoutName = persistentClass.simpleName.toSnakeCase().substringBeforeLast("_")
-    val layoutResId = resources.getIdentifier(layoutName, "layout", packageName)
+fun View.visibleOrGone(isVisible: Boolean) {
+    if (isVisible) {
+        this.visibility = View.VISIBLE
+    } else {
+        this.visibility = View.GONE
+    }
+}
 
-    return DataBindingUtil.inflate<T>(layoutInflater, layoutResId, null, false)
-        .apply {
-            lifecycleOwner = this@autoViewDataBinding
-            setContentView( root )
+fun View.enable() {
+    this.isEnabled = true
+}
+
+fun View.disable() {
+    this.isEnabled = false
+}
+
+fun TabLayout.Tab.createBadge(
+    count: Int,
+    textColor: Int = Color.WHITE,
+    backColor: Int = Color.parseColor("#db635d")
+) {
+    this.orCreateBadge.apply {
+        backgroundColor  = backColor
+        badgeTextColor   = textColor
+        horizontalOffset = -10
+        number = count
+    }
+}
+
+fun RecyclerView.disableViewPagerSwipe() {
+    addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
+        override fun onTouchEvent(view: RecyclerView, event: MotionEvent) {}
+        override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
+        override fun onInterceptTouchEvent(view: RecyclerView, event: MotionEvent): Boolean {
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    this@disableViewPagerSwipe.parent?.requestDisallowInterceptTouchEvent(
+                        true
+                    )
+                }
+            }
+            return false
         }
+    })
 }
 
-/** Automatically sets (ViewDataBinding) using generics detection */
-@SuppressLint("DiscouragedApi")
-@Suppress("UNCHECKED_CAST")
-internal fun <T: ViewDataBinding> AndromedaFragment<*>.autoViewDataBinding(): T {
-
-    val persistentClass : Class<T> = ( javaClass.genericSuperclass as ParameterizedType)
-        .actualTypeArguments[0] as Class<T>
-
-    val layoutName = persistentClass.simpleName.toSnakeCase().substringBeforeLast("_")
-    val layoutResId = resources.getIdentifier(layoutName, "layout", requireActivity().packageName)
-
-    return DataBindingUtil.inflate<T>(layoutInflater, layoutResId, null, false)
-        .apply {
-            lifecycleOwner = this@autoViewDataBinding
-        }
+fun Activity.screenHeight(): Int {
+    val display = this.windowManager.defaultDisplay
+    val point = Point()
+    @Suppress("DEPRECATION")
+    display.getSize(point)
+    return point.y
 }
 
-/** Automatically sets (ViewDataBinding) using generics detection */
-@SuppressLint("DiscouragedApi")
-@Suppress("UNCHECKED_CAST")
-internal fun <T: ViewDataBinding> AndromedaAdapter<*, *>.autoViewDataBinding(
-    context: Context, layoutInflater: LayoutInflater,
-    parent: ViewGroup? = null, attachToParent: Boolean = false
-): T {
+fun Activity.screenWidth(): Int {
+    val display = this.windowManager.defaultDisplay
+    val point = Point()
+    @Suppress("DEPRECATION")
+    display.getSize(point)
+    return point.x
+}
 
-    val persistentClass : Class<T> = ( javaClass.genericSuperclass as ParameterizedType)
-        .actualTypeArguments[0] as Class<T>
+fun View.toBottom(y: Int) {
+    this.translationY = y.toFloat()
+}
 
-    val layoutName = persistentClass.simpleName.toSnakeCase().substringBeforeLast("_")
+fun EditText.printError(error: String) {
+    this.error = error
+    this.requestFocus()
+}
 
-    val layoutResId = context.resources.getIdentifier(
-        layoutName, "layout", context.packageName
+fun EditText.readString(): String {
+    return this.text.toString().trim()
+}
+
+fun ViewPager2.runSimpleSlider(
+    maxSize: Int,
+    delay: Long = 3500,
+    block: ( Int ) -> Unit = {}
+) {
+    this.postDelayed(
+        {
+            var currentPage = this.currentItem
+
+            if( currentPage < maxSize - 1 ) {
+                currentPage += 1
+                this.currentItem = currentPage
+            } else {
+                currentPage = 0
+                this.currentItem = 0
+            }
+
+            block( currentPage )
+
+            this.runSimpleSlider(
+                maxSize = maxSize,
+                delay = delay,
+                block = block
+            )
+        },
+        delay
     )
-
-    return DataBindingUtil.inflate<T>(layoutInflater, layoutResId, parent, attachToParent)
 }

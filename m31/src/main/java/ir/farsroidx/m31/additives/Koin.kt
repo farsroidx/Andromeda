@@ -8,7 +8,10 @@ import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import com.google.gson.Gson
-import ir.farsroidx.m31.*
+import ir.farsroidx.m31.AndromedaApplication
+import ir.farsroidx.m31.AndromedaConfig
+import ir.farsroidx.m31.AndromedaException
+import ir.farsroidx.m31.AndromedaToast
 import ir.farsroidx.m31.app.App
 import ir.farsroidx.m31.app.AppConfig
 import ir.farsroidx.m31.app.AppImpl
@@ -19,6 +22,9 @@ import ir.farsroidx.m31.dispatcher.Dispatcher
 import ir.farsroidx.m31.dispatcher.DispatcherImpl
 import ir.farsroidx.m31.exception.ExceptionHandlerConfig
 import ir.farsroidx.m31.exception.UncaughtExceptionHandlerImpl
+import ir.farsroidx.m31.manager.Manager
+import ir.farsroidx.m31.manager.ManagerConfig
+import ir.farsroidx.m31.manager.ManagerImpl
 import ir.farsroidx.m31.memory.Memory
 import ir.farsroidx.m31.memory.MemoryConfig
 import ir.farsroidx.m31.memory.MemoryImpl
@@ -36,7 +42,7 @@ import org.koin.core.qualifier.Qualifier
 import org.koin.dsl.module
 import org.koin.java.KoinJavaComponent
 
-// TODO: Koin ================================================================================== ///
+// TODO: Koin ============================================================================= Koin ===
 
 internal inline fun <reified T> koinInjection(
     qualifier: Qualifier? = null,
@@ -58,11 +64,12 @@ internal fun initializedKoin(
             configs.forEach { config ->
                 when (config) {
                     is ExceptionHandlerConfig -> exceptionModule(application, config)
-                    is AppConfig              -> add( appModule()               )
-                    is DeviceConfig           -> add( deviceModule( config )    )
-                    is MemoryConfig           -> add( memoryModule( config)     )
-                    is PreferenceConfig       -> add( preferenceModule( config) )
-                    is UtilsConfig            -> add( utilsModule( config )     )
+                    is AppConfig              -> add( appModule()                )
+                    is DeviceConfig           -> add( deviceModule( config )     )
+                    is ManagerConfig          -> add( managerModule( config )    )
+                    is MemoryConfig           -> add( memoryModule( config )     )
+                    is PreferenceConfig       -> add( preferenceModule( config ) )
+                    is UtilsConfig            -> add( utilsModule( config )      )
                     else -> {
                         throw AndromedaException(
                             "This type of AndromedaConfig is not supported, this config is invalid."
@@ -104,21 +111,24 @@ private fun appModule() = module {
     single<App> {
         AppImpl( androidContext() )
     }
-    AndromedaState.isAppUnitInitialized = true
 }
 
 private fun deviceModule(config: DeviceConfig) = module {
     single<Device> {
         DeviceImpl( androidContext(), config )
     }
-    AndromedaState.isDeviceUnitInitialized = true
+}
+
+private fun managerModule(config: ManagerConfig) = module {
+    single<Manager> {
+        ManagerImpl( androidContext(), config )
+    }
 }
 
 private fun memoryModule(config: MemoryConfig) = module {
     single<Memory> {
         MemoryImpl( config )
     }
-    AndromedaState.isMemoryUnitInitialized = true
 }
 
 private fun preferenceModule(config: PreferenceConfig) = module {
@@ -127,12 +137,10 @@ private fun preferenceModule(config: PreferenceConfig) = module {
             androidContext(), get(), config
         )
     }
-    AndromedaState.isPreferenceUnitInitialized = true
 }
 
 private fun utilsModule(config: UtilsConfig) = module {
     single<Utils> {
         UtilsImpl( androidContext(), config )
     }
-    AndromedaState.isUtilsUnitInitialized = true
 }

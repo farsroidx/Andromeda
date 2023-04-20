@@ -1,9 +1,15 @@
+@file:Suppress("unused")
+
 package ir.farsroidx.m31
 
-internal object AndromedaState {
-    var isAppUnitInitialized        = false
-    var isDeviceUnitInitialized     = false
-    var isMemoryUnitInitialized     = false
-    var isPreferenceUnitInitialized = false
-    var isUtilsUnitInitialized      = false
+object AndromedaState {
+
+    var logEnabled: Boolean = true
+
+    var logStrTag : String  = "CentralCore"
+
+    var currentActivity: AndromedaActivity<*>? = null
+
+    var currentFragment: AndromedaFragment<*>? = null
+
 }

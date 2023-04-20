@@ -7,7 +7,7 @@ import android.view.textclassifier.TextLinks
 import androidx.annotation.RequiresApi
 
 internal class ClipboardImpl(
-    private val context: Context,
+    private val context: Context
 ) : Clipboard {
 
     private val clipboardManager by lazy {
