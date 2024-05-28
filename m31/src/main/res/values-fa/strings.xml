@@ -1,5 +1,0 @@
-<resources>
-    <string name="m31_page_title">گزارش اطلاعات خرابی</string>
-    <string name="m31_page_des">خطایی رخ داده است</string>
-    <string name="m31_stack_trace">Stack Trace:</string>
-</resources>

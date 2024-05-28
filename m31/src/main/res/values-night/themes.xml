@@ -1,7 +1,0 @@
-<resources>
-
-    <style name="Theme.Andromeda.Exception" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <item name="android:theme">@style/Style.Andromeda.FontFamily</item>
-    </style>
-
-</resources>
